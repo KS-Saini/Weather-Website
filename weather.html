@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css"
+        integrity="sha512-BnbUDfEUfV0Slx6TunuB042k9tuKe3xrD6q4mg5Ed72LTgzDIcLPxg6yI2gcMFRyomt+yJJxE+zJwNmxki6/RA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Check Weather</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* overflow: hidden; */
+            background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+        }
+
+        .container {
+            min-height: 65vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn {
+            border: 2px solid turquoise;
+            outline: none;
+            font-size: 20px;
+            border-radius: 8px;
+            padding: 8px;
+            background: whitesmoke;
+        }
+
+        .btn:hover {
+            cursor: pointer;
+            background: white;
+            color: black;
+        }
+
+        .container-second {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-box {
+            width: 315px;
+            height: 45px;
+            padding: 6px;
+            font-size: 20px;
+            outline: none;
+            border-radius: 10px;
+            border: 2px solid blue;
+        }
+
+        .allstatus {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <a href="index.html">Go back</a>
+
+    <div class="container">
+        <input type="text" class="input-box" placeholder="Search here...">
+        <button class="btn">Search</button>
+    </div>
+    <div class="allstatus">
+        <h2 class="heading"></h2>
+        <h3 class="Temp"></h3> 
+        <h4 class="tempstatus"></h4>
+        <h5 class="output-area"></h5>
+    </div>
+
+    <!-- script part -->
+    <script>
+        let firstinputbox = document.querySelector(".input-box");
+        let firstbtn = document.querySelector(".btn");
+        let TextField = document.querySelector(".output-area");
+        let heading = document.querySelector(".heading");
+        let Temp = document.querySelector(".Temp");
+        let tempstatus = document.querySelector(".tempstatus");
+
+        const getInfo = async (event) => {
+            event.preventDefault();
+
+            const inputVal = firstinputbox.value;
+
+            if (inputVal === "") {
+                TextField.innerHTML = "plz enter something before search";
+            } else {
+                try {
+                    let url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&units=metric&appid=4c57868ed42ecd34f2e7e3de98ba9424`
+                    let response = await fetch(url);
+                    const data = await response.json();
+                    var arrdata = [data];
+                    // console.log(arrdata[0].main.temp);
+
+                    Temp.innerHTML = arrdata[0].main.temp + "°C";
+                    heading.innerHTML = `The Temp in ${inputVal} `
+
+                    tempstatus.innerHTML = "Weather Status - " + arrdata[0].weather[0].main;
+
+                } catch {
+                    TextField.innerHTML = "plz enter the city name correct";
+                }
+            }
+        }
+
+        firstbtn.addEventListener("click", getInfo);
+
+    </script>
+
+</body>
+
+</html>
